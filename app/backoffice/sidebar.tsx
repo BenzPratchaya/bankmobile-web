@@ -14,7 +14,7 @@ export default function Sidebar() {
           </Link>
         </div>
         <div>
-          <Link href="/backoffice/but">
+          <Link href="/backoffice/buy">
             <i className="fa fa-shopping-cart mr-2 w-[25px] text-center"></i>
             ซื้อสินค้า
           </Link>
