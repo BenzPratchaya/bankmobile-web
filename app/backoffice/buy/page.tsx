@@ -212,7 +212,6 @@ export default function Page() {
         <div className="mt-2">ชื่อลูกค้า</div>
         <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
 
-
         <div className="mt-2">เบอร์โทรศัพท์</div>
         <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} />
 

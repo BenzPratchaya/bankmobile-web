@@ -69,7 +69,7 @@ export default function Page() {
         <div className="mt-4">เลขประจําตัวผู้เสียภาษี</div>
         <input type="text" value={taxCode} onChange={(e) => setTaxCode(e.target.value)} />
 
-        <button className="mt-4" onClick={handleSave}>
+        <button className="btn mt-4" onClick={handleSave}>
           <i className="fa fa-save mr-2"></i>บันทึก
         </button>
       </div>
