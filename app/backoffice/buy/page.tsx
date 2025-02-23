@@ -21,14 +21,24 @@ export default function Page() {
   const [id, setId] = useState(0); // id เอาไว้แก้ไขรายการ
   const [qty, setQty] = useState(0); // จำนวนสินค้า
 
+  /*
+  pagination
+  */
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [totalRows, setTotalRows] = useState(0);
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]); //เพิ่ม dependencies ให้กับ useEffect เมื่อไหร่ค่าของ page เปลี่ยนให้ไปดึงข้อมูลใหม่ทันที
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${config.apiUrl}/buy/list`);
-      setProducts(res.data);
+      const res = await axios.get(`${config.apiUrl}/buy/list/${page}`);
+      // Ensure products is always an array
+      setProducts(res.data.products);
+      setTotalRows(res.data.totalRows);
+      setTotalPage(res.data.totalPages);
     } catch (error: any) {
       Swal.fire({
         icon: "error",
@@ -138,6 +148,27 @@ export default function Page() {
     setQty(1);
   };
 
+  const exportToExcel = async () => {
+    try {
+      const payload = {
+        products: products,
+      }
+      const res = await axios.post(`${config.apiUrl}/buy/export`, payload);
+      const fileName = res.data.fileName;
+      const a = document.createElement("a");
+      a.href = config.apiUrl + "/uploads/" + fileName;
+      a.download = fileName;
+      a.target = "_blank";
+      a.click();
+    } catch (error: any) {
+      Swal.fire({
+        icon: "error",
+        title: "ผิดพลาด",
+        text: error.message,
+      });
+    }
+  };
+
   return (
     <>
       <h1 className="content-header">รายการซื้อ</h1>
@@ -152,6 +183,11 @@ export default function Page() {
         >
           <i className="fa-solid fa-plus mr-2"></i>
           เพิ่มรายการ
+        </button>
+
+        <button className="btn ms-1" onClick={exportToExcel}>
+          <i className="fa-solid fa-file-excel mr-2"></i>
+          ส่งออกเป็น Excel
         </button>
 
         <table className="table mt-3">
@@ -191,6 +227,34 @@ export default function Page() {
             ))}
           </tbody>
         </table>
+
+        <div className="mt-5">
+          <div>รายการทั้งหมด {totalRows} รายการ</div>
+          <div>
+            หน้า {page} จาก {totalPage}
+          </div>
+          <div className="flex gap-1 mt-2">
+            <button className="btn" onClick={() => setPage(1)}>
+              <i className="fa-solid fa-caret-left mr-2"></i>
+              หน้าแรก
+            </button>
+            <button className="btn" onClick={() => setPage(page - 1)}>
+              <i className="fa-solid fa-caret-left"></i>
+            </button>
+            {Array.from({ length: totalPage }, (_, i) => (
+              <button className={`btn ${i + 1 === page ? "btn-active" : ""}`} onClick={() => setPage(i + 1)} key={i}>
+                {i + 1}
+              </button>
+            ))}
+            <button className="btn" onClick={() => setPage(page + 1)}>
+              <i className="fa-solid fa-caret-right"></i>
+            </button>
+            <button className="btn" onClick={() => setPage(totalPage)}>
+              หน้าสุดท้าย
+              <i className="fa-solid fa-caret-right ml-2"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
       <Modal title="เพิ่มรายการ" isOpen={isOpen} onClose={handleCloseModal}>
