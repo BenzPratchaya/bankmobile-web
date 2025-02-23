@@ -19,7 +19,7 @@
 }
 
 input {
-  @apply p-2 rounded-md border border-gray-300 w-full;
+  @apply p-2 rounded-md border border-gray-600 w-full;
 }
 
 body {
@@ -59,7 +59,7 @@ body {
 }
 
 .btn-edit {
-  @apply bg-yellow-500 text-white px-3 py-2 rounded-md
+  @apply bg-blue-500 text-white px-3 py-2 rounded-md
 }
 
 .btn-delete {

@@ -19,6 +19,7 @@ export default function Page() {
   const [remark, setRemark] = useState("");
   const [products, setProducts] = useState([]); // สินค้าที่ซื้อ
   const [id, setId] = useState(0); // id เอาไว้แก้ไขรายการ
+  const [qty, setQty] = useState(0); // จำนวนสินค้า
 
   useEffect(() => {
     fetchData();
@@ -57,6 +58,7 @@ export default function Page() {
         customerPhone: customerPhone,
         customerAddress: customerAddress,
         remark: remark,
+        qty: qty,
       };
 
       if (id === 0) {
@@ -133,6 +135,7 @@ export default function Page() {
     setCustomerPhone("");
     setCustomerAddress("");
     setRemark("");
+    setQty(1);
   };
 
   return (
@@ -219,6 +222,8 @@ export default function Page() {
         <div className="mt-2">หมายเหตุ</div>
         <input type="text" value={remark} onChange={(e) => setRemark(e.target.value)} />
 
+        <div className="mt-2">จำนวนสินค้า</div>
+        <input type="text" value={qty} onChange={(e) => setQty(Number(e.target.value ?? 0))} />
         <div className="mt-2">
           <button className="btn" onClick={handleSave}>
             <i className="fa-solid fa-save mr-2"></i>
