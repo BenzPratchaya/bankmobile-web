@@ -17,9 +17,9 @@ export default function SignIn() {
       const payload = {
         username: username,
         password: password,
-      }
-      const response = await axios.post(`${config.apiUrl}/user/signin`, payload); 
-     
+      };
+      const response = await axios.post(`${config.apiUrl}/user/signin`, payload);
+
       if (response.data.token !== null) {
         localStorage.setItem("token", response.data.token);
         router.push("/backoffice/dashboard");
@@ -28,17 +28,21 @@ export default function SignIn() {
           title: "ตรวจสอบ user",
           text: "ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง",
           icon: "warning",
-          timer: 2000
-        })
+          timer: 2000,
+        });
       }
     } catch (error: any) {
-      Swal.fire({
-        title: "Error",
-        text: error.message,
-        icon: 'error',
-      })
+      if (error.response.status === 401) {
+        alert("ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: error.message,
+          icon: "error",
+        });
+      }
     }
-  }
+  };
 
   return (
     <div className="signin-container">
@@ -51,7 +55,9 @@ export default function SignIn() {
         <div className="mt-4">Password</div>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-        <button className="mt-4" onClick={handleSignIn}>Sign In<i className="fa fa-sign-in-alt ml-2"></i></button>
+        <button className="mt-4" onClick={handleSignIn}>
+          Sign In<i className="fa fa-sign-in-alt ml-2"></i>
+        </button>
       </div>
     </div>
   );

@@ -47,15 +47,15 @@ body {
 }
 
 .table thead th {
-  @apply p-3 text-left;
+  @apply p-3;
 }
 
 .table tbody tr {
-  @apply border-b bg-gray-300
+  @apply border-b border-gray-300
 }
 
 .table tbody td {
-  @apply p-3 text-left bg-gray-100
+  @apply p-3 bg-gray-100
 }
 
 .btn-edit {
